@@ -57,29 +57,30 @@ export default function Chatbot() {
     };
   
     return (
-      <main className="flex flex-col items-center justify-center">
-        <h1 className="title">AI Assistant</h1>
-        <div className="input-container">
+      <main className="chatbot flex flex-col items-center rounded-3xl m-5 h-full">
+        <section className="response flex flex-1 rounded-xl m-4">
+            <p className='p-5'>{response}</p>
+        </section>
+        <section className="input_box flex justify-between rounded-full w-[900px] p-3 mb-3">
           <input
             type="text"
             value={command}
             onChange={handleCommandChange}
             placeholder="Enter your command"
-            className="input"
+            className="ml-5 mr-5"
           />
-          <button className="button" onClick={handleSendCommand}>
-            Send
-          </button>
-          <button className="button" onClick={handleSpeechInput}>
-            {recognizing ? 'Listening...' : 'Listen'}
-          </button>
-        </div>
-        <div className="response-container">
-          <h2>Response:</h2>
-          <div className="response-box">
-            <p>{response}</p>
+          <div>
+            <button className="w-10 h-10 rounded-full mr-3" onClick={handleSendCommand}>
+              <i className="fa-solid fa-paper-plane"></i>
+            </button>
+            <button className="w-10 h-10 rounded-full mr-3" onClick={handleSpeechInput}>
+              {recognizing ? 
+                <i className="fa-solid fa-microphone-lines"></i> : 
+                <i className="fa-solid fa-microphone"></i>
+              }
+            </button>
           </div>
-        </div>
+        </section>
       </main>
     );
 }

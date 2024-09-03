@@ -3,60 +3,44 @@
 @tailwind utilities;
 
 * {
-  font-family: "Arial", sans-serif;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  background-color: antiquewhite;
-  height: 100vh;
+  background-color: rgba(23, 23, 23, 255);
 }
 
-.title {
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 20px;
+.chatbot {
+  background-color: rgba(33, 33, 33, 255);
+  color: whitesmoke;
 }
 
-.input-container {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
+header {
+  background-color: rgba(104, 104, 104, 255);
+  color: black;
 }
 
-.input {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
-  font-size: 16px;
+.input_box,
+input {
+  background-color: rgba(47, 47, 47, 255);
+  outline: none;
 }
 
-.button {
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 10px;
+.response {
+  background-color: rgba(47, 47, 47, 255);
+  width: 75%;
 }
 
-.button:hover {
-  background-color: #0056b3;
+button {
+  background-color: rgba(103, 103, 103, 255);
+  color: whitesmoke;
 }
 
-.response-container {
-  margin-top: 20px;
-}
-
-.response-box {
-  background-color: #f0f0f0;
-  padding: 10px;
-  border-radius: 5px;
-  max-height: 150px;
-  overflow-y: auto;
+button:hover {
+  background-color: rgba(215, 215, 215, 255);
+  color: black;
 }
