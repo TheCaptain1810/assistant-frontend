@@ -14,14 +14,10 @@ body {
   background-color: rgba(23, 23, 23, 255);
 }
 
-.chatbot {
+.chatbot,
+header {
   background-color: rgba(33, 33, 33, 255);
   color: whitesmoke;
-}
-
-header {
-  background-color: rgba(104, 104, 104, 255);
-  color: black;
 }
 
 .input_box,

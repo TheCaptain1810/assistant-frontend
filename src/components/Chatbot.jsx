@@ -15,13 +15,27 @@ export default function Chatbot() {
   
       try {
         const res = await axios.post('http://localhost:5000/command', { command });
-        setResponse(res.data.response);
+        typeResponse(res.data.response);
       } catch (error) {
         console.error('Error sending command:', error);
-        setResponse('Error sending command.');
+        typeResponse('Error sending command.');
       } finally {
         setCommand(''); // Clear the input after sending
       }
+    };
+
+    const typeResponse = (text) => {
+      let index = 0;
+      setResponse(text.charAt(index)); // Clear the response before typing
+
+      const typingInterval = setInterval(() => {
+        setResponse((prev) => prev + text.charAt(index)); // Add next character
+        index++;
+        
+        if (index === text.length) {
+          clearInterval(typingInterval); // Stop typing when done
+        }
+      }, 50); // Adjust typing speed (milliseconds per character)
     };
   
     const handleSpeechInput = () => {
@@ -43,7 +57,7 @@ export default function Chatbot() {
   
       recognition.onerror = (event) => {
         console.error('Speech recognition error:', event);
-        setResponse('Error recognizing speech.');
+        typeResponse('Error recognizing speech.');
         setRecognizing(false);
       };
   
@@ -67,7 +81,7 @@ export default function Chatbot() {
             value={command}
             onChange={handleCommandChange}
             placeholder="Enter your command"
-            className="ml-5 mr-5"
+            className="ml-5 mr-5 w-[650px]"
           />
           <div>
             <button className="w-10 h-10 rounded-full mr-3" onClick={handleSendCommand}>
