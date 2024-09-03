@@ -9,20 +9,6 @@ export default function Chatbot() {
     const handleCommandChange = (e) => {
       setCommand(e.target.value);
     };
-  
-    const handleSendCommand = async () => {
-      if (!command) return; // Avoid sending empty commands
-  
-      try {
-        const res = await axios.post('http://localhost:5000/command', { command });
-        typeResponse(res.data.response);
-      } catch (error) {
-        console.error('Error sending command:', error);
-        typeResponse('Error sending command.');
-      } finally {
-        setCommand(''); // Clear the input after sending
-      }
-    };
 
     const typeResponse = (text) => {
       let index = 0;
@@ -53,6 +39,7 @@ export default function Chatbot() {
         const speechResult = event.results[0][0].transcript;
         setCommand(speechResult);
         setRecognizing(false);  // Stop recognizing when result is obtained
+        handleSendCommand(speechResult);
       };
   
       recognition.onerror = (event) => {
@@ -69,6 +56,20 @@ export default function Chatbot() {
       setRecognizing(true);
       recognition.start();
     };
+
+    const handleSendCommand = async (commandToSend) => {
+      if (!commandToSend) return; // Avoid sending empty commands
+
+      try {
+        const res = await axios.post('http://localhost:5000/command', { command: commandToSend });
+        typeResponse(res.data.response);
+      } catch (error) {
+        console.error('Error sending command:', error);
+        typeResponse('Error sending command.');
+      } finally {
+        setCommand(''); // Clear the input after sending
+      }
+    };
   
     return (
       <main className="chatbot flex flex-col items-center rounded-3xl m-5 h-full">
@@ -84,7 +85,9 @@ export default function Chatbot() {
             className="ml-5 mr-5 w-[650px]"
           />
           <div>
-            <button className="w-10 h-10 rounded-full mr-3" onClick={handleSendCommand}>
+            <button className="w-10 h-10 rounded-full mr-3" onClick={() => {
+              handleSendCommand(command);
+            }}>
               <i className="fa-solid fa-paper-plane"></i>
             </button>
             <button className="w-10 h-10 rounded-full mr-3" onClick={handleSpeechInput}>
