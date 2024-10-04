@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-export default function ChatInput({ command, onCommandChange, onSendCommand, onSpeechInput, recognizing }) {
+export default function ChatInput({ command, onCommandChange, onSendCommand, onSpeechInput, recognizing, onStopResponse }) {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       onSendCommand();
@@ -25,6 +25,9 @@ export default function ChatInput({ command, onCommandChange, onSendCommand, onS
             <i className="fa-solid fa-microphone-lines"></i> : 
             <i className="fa-solid fa-microphone"></i>
           }
+        </button>
+        <button className="w-10 h-10 rounded-full mr-3 bg-red-500 hover:bg-red-700" onClick={onStopResponse}>
+          <i className="fa-solid fa-stop"></i>
         </button>
       </div>
     </section>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import ChatInterface from './ChatInterface';
 import ChatInput from './ChatInput';
@@ -7,6 +7,8 @@ export default function Chatbot() {
     const [command, setCommand] = useState('');
     const [response, setResponse] = useState('');
     const [recognizing, setRecognizing] = useState(false);
+    const typingIntervalRef = useRef(null);
+    const recognitionRef = useRef(null);
   
     const handleCommandChange = (e) => {
       setCommand(e.target.value);
@@ -14,16 +16,16 @@ export default function Chatbot() {
 
     const typeResponse = (text) => {
       let index = 0;
-      setResponse(text.charAt(index)); // Clear the response before typing
+      setResponse(text.charAt(index));
 
-      const typingInterval = setInterval(() => {
-        setResponse((prev) => prev + text.charAt(index)); // Add next character
+      typingIntervalRef.current = setInterval(() => {
+        setResponse((prev) => prev + text.charAt(index));
         index++;
         
         if (index === text.length) {
-          clearInterval(typingInterval); // Stop typing when done
+          clearInterval(typingIntervalRef.current);
         }
-      }, 50); // Adjust typing speed (milliseconds per character)
+      }, 50);
     };
   
     const handleSpeechInput = () => {
@@ -68,6 +70,7 @@ export default function Chatbot() {
         }
       }, 10000); // 10 seconds timeout
 
+      recognitionRef.current = recognition;
       setRecognizing(true);
       recognition.start();
 
@@ -90,6 +93,16 @@ export default function Chatbot() {
         setCommand(''); // Clear the input after sending
       }
     };
+
+    const handleStopResponse = () => {
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+      }
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+        setRecognizing(false);
+      }
+    };
   
     return (
       <main className="chatbot flex flex-col items-center rounded-3xl m-5 h-full">
@@ -100,6 +113,7 @@ export default function Chatbot() {
           onSendCommand={() => handleSendCommand(command)}
           onSpeechInput={handleSpeechInput}
           recognizing={recognizing}
+          onStopResponse={handleStopResponse}
         />
       </main>
     );
