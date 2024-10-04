@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import ChatInterface from './ChatInterface';
@@ -10,7 +11,10 @@ export default function Chatbot() {
     const typingIntervalRef = useRef(null);
     const recognitionRef = useRef(null);
     const synthRef = useRef(null);
-  
+    const [chatHistory, setChatHistory] = useState([]);
+    const [currentResponse, setCurrentResponse] = useState('');
+    const [isTyping, setIsTyping] = useState(false);
+
     useEffect(() => {
       synthRef.current = window.speechSynthesis;
       return () => {
@@ -26,16 +30,23 @@ export default function Chatbot() {
 
     const typeResponse = (text) => {
       let index = 0;
-      setResponse(text.charAt(index));
+      setCurrentResponse(text.charAt(index));
+      clearInterval(typingIntervalRef.current);
 
       typingIntervalRef.current = setInterval(() => {
-        setResponse((prev) => prev + text.charAt(index));
-        index++;
-        
-        if (index === text.length) {
+        if (index < text.length) {
+          setCurrentResponse((prev) => prev + text.charAt(index));
+          index++;
+        } else {
           clearInterval(typingIntervalRef.current);
+          setChatHistory(prevHistory => [
+            ...prevHistory,
+            { type: 'assistant', content: text }
+          ]);
+          setCurrentResponse('');
+          setIsTyping(false);
         }
-      }, 75);
+      }, 80);
     };
 
     const speakResponse = (text) => {
@@ -99,14 +110,27 @@ export default function Chatbot() {
       if (!commandToSend) return; // Avoid sending empty commands
 
       try {
+        setChatHistory(prevHistory => [
+          ...prevHistory,
+          { type: 'user', content: commandToSend }
+        ]);
+
         const res = await axios.post('http://localhost:5000/command', { command: commandToSend });
-        typeResponse(res.data.response);
-        speakResponse(res.data.response);
+        const newResponse = res.data.response;
+        
+        setIsTyping(true);
+        typeResponse(newResponse);
+        speakResponse(newResponse);
       } catch (error) {
         console.error('Error sending command:', error);
         const errorMessage = 'Error sending command.';
-        typeResponse(errorMessage);
-        speakResponse(errorMessage);
+        
+        setChatHistory(prevHistory => [
+          ...prevHistory,
+          { type: 'assistant', content: errorMessage }
+        ]);
+        setCurrentResponse(errorMessage);
+        setIsTyping(false);
       } finally {
         setCommand(''); // Clear the input after sending
       }
@@ -128,7 +152,11 @@ export default function Chatbot() {
   
     return (
       <main className="chatbot flex flex-col items-center rounded-3xl m-5 h-full">
-        <ChatInterface response={response} />
+        <ChatInterface 
+          chatHistory={chatHistory} 
+          currentResponse={currentResponse} 
+          isTyping={isTyping}
+        />
         <ChatInput
           command={command}
           onCommandChange={handleCommandChange}
