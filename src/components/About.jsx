@@ -22,6 +22,8 @@ export default function About() {
       <p>
         We&apos;re constantly working to improve and expand the capabilities of our AI Assistant. Your feedback is valuable to us as we strive to create the most helpful and user-friendly AI experience possible.
       </p>
+      <br />
+      <p>&copy; {new Date().getFullYear()} Group 25 Capstone Project.</p>
       <Link to="/" className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         Back to Assistant
       </Link>
