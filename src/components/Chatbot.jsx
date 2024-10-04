@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import ChatInterface from './ChatInterface';
 import ChatInput from './ChatInput';
@@ -9,7 +9,17 @@ export default function Chatbot() {
     const [recognizing, setRecognizing] = useState(false);
     const typingIntervalRef = useRef(null);
     const recognitionRef = useRef(null);
+    const synthRef = useRef(null);
   
+    useEffect(() => {
+      synthRef.current = window.speechSynthesis;
+      return () => {
+        if (synthRef.current) {
+          synthRef.current.cancel();
+        }
+      };
+    }, []);
+
     const handleCommandChange = (e) => {
       setCommand(e.target.value);
     };
@@ -25,7 +35,12 @@ export default function Chatbot() {
         if (index === text.length) {
           clearInterval(typingIntervalRef.current);
         }
-      }, 50);
+      }, 75);
+    };
+
+    const speakResponse = (text) => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      synthRef.current.speak(utterance);
     };
   
     const handleSpeechInput = () => {
@@ -86,9 +101,12 @@ export default function Chatbot() {
       try {
         const res = await axios.post('http://localhost:5000/command', { command: commandToSend });
         typeResponse(res.data.response);
+        speakResponse(res.data.response);
       } catch (error) {
         console.error('Error sending command:', error);
-        typeResponse('Error sending command.');
+        const errorMessage = 'Error sending command.';
+        typeResponse(errorMessage);
+        speakResponse(errorMessage);
       } finally {
         setCommand(''); // Clear the input after sending
       }
@@ -102,6 +120,10 @@ export default function Chatbot() {
         recognitionRef.current.abort();
         setRecognizing(false);
       }
+      if (synthRef.current) {
+        synthRef.current.cancel();
+      }
+      setResponse((prevResponse) => prevResponse + ' [Stopped]');
     };
   
     return (
