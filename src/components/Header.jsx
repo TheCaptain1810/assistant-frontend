@@ -18,6 +18,10 @@ export default function Header() {
           Contact
           <div className="bg-white h-[2px] w-0 group-hover:w-full transition-all duration-500"></div>
         </Link>
+        <Link to="/history" className="mr-5 group">
+          History
+          <div className="bg-white h-[2px] w-0 group-hover:w-full transition-all duration-500"></div>
+        </Link>
       </nav>
     </header>
   )
