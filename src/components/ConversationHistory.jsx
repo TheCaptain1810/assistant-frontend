@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 export default function ConversationHistory() {
   const [conversations, setConversations] = useState([]);
@@ -25,6 +27,53 @@ export default function ConversationHistory() {
     fetchConversations();
   }, []);
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Copied to clipboard!');
+    }, (err) => {
+      console.error('Could not copy text: ', err);
+    });
+  };
+
+  const formatMessage = (message) => {
+    const codeBlockRegex = /```(\w+)?\n([\s\S]*?)```/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = codeBlockRegex.exec(message)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push(message.slice(lastIndex, match.index));
+      }
+      const language = match[1] || 'plaintext';
+      const code = match[2].trim();
+      parts.push(
+        <div key={match.index} className="relative">
+          <SyntaxHighlighter 
+            language={language} 
+            style={docco}
+            className="rounded-md my-2"
+          >
+            {code}
+          </SyntaxHighlighter>
+          <button
+            onClick={() => copyToClipboard(code)}
+            className="absolute top-2 right-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-xs"
+          >
+            Copy
+          </button>
+        </div>
+      );
+      lastIndex = match.index + match[0].length;
+    }
+
+    if (lastIndex < message.length) {
+      parts.push(message.slice(lastIndex));
+    }
+
+    return parts;
+  };
+
   if (loading) return <div className="text-white">Loading...</div>;
   if (error) return <div className="text-white">Error: {error}</div>;
 
@@ -39,11 +88,11 @@ export default function ConversationHistory() {
             <h3 className="text-xl font-semibold mb-2">Conversation {index + 1}</h3>
             <div className="mb-2 text-blue-300">
               <span className="font-bold">You: </span>
-              {conversation.user_input}
+              {formatMessage(conversation.user_input)}
             </div>
             <div className="mb-2 text-green-300">
               <span className="font-bold">Assistant: </span>
-              {conversation.assistant_response}
+              {formatMessage(conversation.assistant_response)}
             </div>
             <div className="text-sm text-gray-400">
               {new Date(conversation.timestamp).toLocaleString()}

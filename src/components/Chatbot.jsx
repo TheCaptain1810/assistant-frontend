@@ -156,6 +156,7 @@ export default function Chatbot() {
           chatHistory={chatHistory} 
           currentResponse={currentResponse} 
           isTyping={isTyping}
+          className="flex-1"
         />
         <ChatInput
           command={command}
