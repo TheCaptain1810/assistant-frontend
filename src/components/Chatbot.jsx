@@ -31,6 +31,7 @@ export default function Chatbot() {
     const typeResponse = (text) => {
       let index = 0;
       setCurrentResponse(text.charAt(index));
+      setIsTyping(true);
       clearInterval(typingIntervalRef.current);
 
       typingIntervalRef.current = setInterval(() => {
@@ -39,12 +40,13 @@ export default function Chatbot() {
           index++;
         } else {
           clearInterval(typingIntervalRef.current);
+          setIsTyping(false);
+          // Add the complete response to chat history here
           setChatHistory(prevHistory => [
             ...prevHistory,
             { type: 'assistant', content: text }
           ]);
-          setCurrentResponse('');
-          setIsTyping(false);
+          // Don't clear currentResponse here
         }
       }, 80);
     };
@@ -110,6 +112,9 @@ export default function Chatbot() {
       if (!commandToSend) return; // Avoid sending empty commands
 
       try {
+        // Clear the previous response before sending a new command
+        setCurrentResponse('');
+        
         setChatHistory(prevHistory => [
           ...prevHistory,
           { type: 'user', content: commandToSend }
@@ -121,6 +126,12 @@ export default function Chatbot() {
         setIsTyping(true);
         typeResponse(newResponse);
         speakResponse(newResponse);
+
+        // Remove this block to prevent adding the response twice
+        // setChatHistory(prevHistory => [
+        //   ...prevHistory,
+        //   { type: 'assistant', content: newResponse }
+        // ]);
       } catch (error) {
         console.error('Error sending command:', error);
         const errorMessage = 'Error sending command.';
