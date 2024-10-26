@@ -120,7 +120,7 @@ export default function Chatbot() {
           { type: 'user', content: commandToSend }
         ]);
 
-        const res = await axios.post('http://127.0.0.1:5000', { command: commandToSend });
+        const res = await axios.post('https://python-backend-capstone-1.onrender.com/command', { command: commandToSend });
         const newResponse = res.data.response;
         
         setIsTyping(true);
