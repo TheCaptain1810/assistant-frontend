@@ -13,7 +13,7 @@ export default function ConversationHistory() {
     const fetchConversations = async () => {
       try {
         console.log('Fetching conversations...');
-        const response = await axios.get('http://localhost:5000/conversations');
+        const response = await axios.get('https://python-backend-capstone-1.onrender.com/conversations');
         console.log('Received data:', response.data);
         setConversations(response.data);
         setLoading(false);
