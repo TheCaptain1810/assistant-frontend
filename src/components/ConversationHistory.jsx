@@ -13,7 +13,7 @@ export default function ConversationHistory() {
     const fetchConversations = async () => {
       try {
         console.log('Fetching conversations...');
-        const response = await axios.get('https://python-backend-capstone-1.onrender.com/conversations');
+        const response = await axios.get('http://127.0.0.1:5000/conversations');
         console.log('Received data:', response.data);
         setConversations(response.data);
         setLoading(false);
@@ -74,11 +74,25 @@ export default function ConversationHistory() {
     return parts;
   };
 
-  if (loading) return <div className="text-white">Loading...</div>;
-  if (error) return <div className="text-white">Error: {error}</div>;
+  if (loading) return <div className="text-white flex flex-col items-center text-center m-3">
+    <Link to="/" className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Back to Assistant
+    </Link>
+    Loading...
+  </div>;
+
+  if (error) return <div className="text-white flex flex-col items-center text-center m-3">
+    <Link to="/" className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Back to Assistant
+    </Link>
+    Error: {error}
+  </div>;
 
   return (
     <div className="conversation-history-container m-5 p-5 rounded-3xl text-white">
+      <Link to="/" className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Back to Assistant
+      </Link>
       <h2 className="text-2xl font-bold mb-4">Conversation History</h2>
       {conversations.length === 0 ? (
         <p>No conversations found.</p>
@@ -100,9 +114,6 @@ export default function ConversationHistory() {
           </div>
         ))
       )}
-      <Link to="/" className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Back to Assistant
-      </Link>
     </div>
   );
 }

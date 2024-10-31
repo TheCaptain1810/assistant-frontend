@@ -120,7 +120,7 @@ export default function Chatbot() {
           { type: 'user', content: commandToSend }
         ]);
 
-        const res = await axios.post('https://python-backend-capstone-1.onrender.com/command', { command: commandToSend });
+        const res = await axios.post('http://127.0.0.1:5000/command', { command: commandToSend });
         const newResponse = res.data.response;
         
         setIsTyping(true);
@@ -162,7 +162,7 @@ export default function Chatbot() {
     };
   
     return (
-      <main className="chatbot flex flex-col items-center rounded-3xl m-5 h-full">
+      <main className="chatbot flex flex-col items-center rounded-3xl m-5 h-[calc(100%-2.5rem)] overflow-hidden">
         <ChatInterface 
           chatHistory={chatHistory} 
           currentResponse={currentResponse} 

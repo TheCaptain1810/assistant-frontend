@@ -8,9 +8,9 @@ import ConversationHistory from './components/ConversationHistory';
 const App = () => {
   return (
     <Router>
-      <div className="flex flex-col h-screen overflow-hidden">
+      <div className="h-screen fixed w-full overflow-hidden">
         <Header />
-        <div className="flex-1 overflow-y-auto">
+        <div className="h-[calc(100vh-4rem)]">
           <Routes>
             <Route path="/" element={<Chatbot />} />
             <Route path="/about" element={<About />} />
