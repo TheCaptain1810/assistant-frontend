@@ -45,8 +45,8 @@ export default function ChatInterface({ chatHistory, currentResponse, isTyping }
   };
 
   return (
-    <section className="chat-interface flex flex-col flex-1 w-full max-w-3xl rounded-xl m-4 overflow-hidden">
-      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4">
+    <section className="chat-interface flex flex-col flex-1 w-full max-w-3xl rounded-xl mx-2 md:mx-4 overflow-hidden">
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-2 md:p-4">
         {chatHistory.map((message, index) => (
           <div
             key={index}
@@ -55,7 +55,7 @@ export default function ChatInterface({ chatHistory, currentResponse, isTyping }
             }`}
           >
             <div
-              className={`inline-block p-3 rounded-lg ${
+              className={`inline-block p-2 md:p-3 rounded-lg max-w-[85%] md:max-w-[75%] ${
                 message.type === 'user'
                   ? 'bg-blue-500 text-white'
                   : 'bg-gray-200 text-black'

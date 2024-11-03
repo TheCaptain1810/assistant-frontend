@@ -39,3 +39,82 @@ button:hover {
   background-color: rgba(215, 215, 215, 255);
   color: black;
 }
+
+/* Add these additional styles */
+@media (max-width: 768px) {
+  .input_box {
+    padding: 0.5rem;
+  }
+
+  .input_box input {
+    font-size: 0.9rem;
+  }
+
+  .chatbot {
+    margin: 0.5rem;
+  }
+
+  header {
+    padding: 0.5rem;
+  }
+
+  header h1 {
+    font-size: 1.25rem;
+  }
+
+  nav {
+    font-size: 0.9rem;
+  }
+
+  .header-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Add these new styles */
+.nav-link-mobile {
+  @apply relative flex items-center w-full py-4 transition-colors duration-200 hover:bg-gray-700 px-4;
+}
+
+.mobile-menu-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 z-10 transition-opacity duration-300;
+}
+
+.mobile-menu {
+  @apply fixed right-0 top-0 h-full w-72 bg-gray-800 z-20 transform transition-transform duration-300 ease-in-out;
+}
+
+/* Update media queries */
+@media (max-width: 768px) {
+  .input_box {
+    @apply mx-2;
+  }
+
+  .chatbot {
+    @apply m-2;
+  }
+
+  header {
+    @apply px-2;
+  }
+
+  header h1 {
+    @apply text-xl ml-4;
+  }
+
+  .mobile-menu-enter {
+    transform: translateX(100%);
+  }
+
+  .mobile-menu-enter-active {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-exit {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-exit-active {
+    transform: translateX(100%);
+  }
+}

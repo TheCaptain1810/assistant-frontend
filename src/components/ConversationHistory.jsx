@@ -89,16 +89,16 @@ export default function ConversationHistory() {
   </div>;
 
   return (
-    <div className="conversation-history-container m-5 p-5 rounded-3xl text-white">
-      <Link to="/" className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    <div className="conversation-history-container m-2 md:m-5 p-3 md:p-5 rounded-3xl text-white">
+      <Link to="/" className="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm md:text-base">
         Back to Assistant
       </Link>
-      <h2 className="text-2xl font-bold mb-4">Conversation History</h2>
+      <h2 className="text-xl md:text-2xl font-bold mb-4">Conversation History</h2>
       {conversations.length === 0 ? (
         <p>No conversations found.</p>
       ) : (
         conversations.map((conversation, index) => (
-          <div key={conversation._id} className="mb-4 p-4 bg-gray-800 rounded-lg">
+          <div key={conversation._id} className="mb-4 p-3 md:p-4 bg-gray-800 rounded-lg text-sm md:text-base">
             <h3 className="text-xl font-semibold mb-2">Conversation {index + 1}</h3>
             <div className="mb-2 text-blue-300">
               <span className="font-bold">You: </span>
