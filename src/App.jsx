@@ -8,7 +8,7 @@ import ConversationHistory from './components/ConversationHistory';
 const App = () => {
   return (
     <Router>
-      <div className="h-screen fixed w-full overflow-hidden">
+      <div className="min-h-screen w-full">
         <Header />
         <div className="h-[calc(100vh-4rem)]">
           <Routes>
