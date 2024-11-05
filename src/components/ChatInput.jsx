@@ -7,7 +7,7 @@ export default function ChatInput({ command, onCommandChange, onSendCommand, onS
   };
 
   return (
-    <section className="input_box flex justify-between rounded-full w-full max-w-[900px] p-3 mb-6 mx-4">
+    <section className="input_box flex justify-between rounded-full w-full max-w-[900px] p-3 mb-9 mx-4">
       <input
         type="text"
         value={command}
